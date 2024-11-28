@@ -39,7 +39,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
     if (token == null) throw Exception('No token found');
 
     final response = await http.get(
-      Uri.parse('$apiUrl'),
+      Uri.parse(apiUrl),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

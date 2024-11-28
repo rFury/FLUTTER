@@ -17,12 +17,12 @@ class HomeScreen extends StatelessWidget {
   final API apiService = API();
 
   List<Map<String, dynamic>> pages = [
-  {'label': 'Rooms', 'widget': RoomsPage()},
-  {'label': 'Students', 'widget': StudentsPage()},
-  {'label': 'Teachers', 'widget': TeachersPage()},
-  {'label': 'Subjects', 'widget': SubjectsPage()},
-  {'label': 'Classes', 'widget': ClassesPage()},
-  {'label': 'Sessions', 'widget': SessionsPage()},
+  {'label': 'Rooms', 'widget': const RoomsPage()},
+  {'label': 'Students', 'widget': const StudentsPage()},
+  {'label': 'Teachers', 'widget': const TeachersPage()},
+  {'label': 'Subjects', 'widget': const SubjectsPage()},
+  {'label': 'Classes', 'widget': const ClassesPage()},
+  {'label': 'Sessions', 'widget': const SessionsPage()},
 
 ];
 

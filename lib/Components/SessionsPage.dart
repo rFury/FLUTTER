@@ -198,7 +198,7 @@ class _SessionsPageState extends State<SessionsPage> {
                   // Add a function to handle new session creation
                 }
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
           ],
         );

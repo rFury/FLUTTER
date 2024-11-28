@@ -39,7 +39,7 @@ class _RoomsPageState extends State<RoomsPage> {
     if (token == null) throw Exception('No token found');
 
     final response = await http.get(
-      Uri.parse('$apiUrl'),
+      Uri.parse(apiUrl),
       headers: {
         'Authorization': 'Bearer $token',
         'Content-Type': 'application/json',

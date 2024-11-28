@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tp3/Components/HomeScreen.dart';
-import 'package:tp3/Components/SessionsPage.dart';
 
 import 'package:tp3/Login.dart';
 

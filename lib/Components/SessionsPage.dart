@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tp3/Model/Session.model.dart';
 import 'package:tp3/Services/API.service.dart';
 
@@ -12,7 +13,7 @@ class SessionsPage extends StatefulWidget {
 }
 
 class _SessionsPageState extends State<SessionsPage> {
-  final String apiUrl = 'http://localhost:3000/sessions';
+  final String apiUrl = 'http://10.0.2.2:3000/sessions';
   final API _api = API(); // API instance to call functions
   List<Session> _session = [];
   bool isLoading = true;
@@ -48,6 +49,7 @@ class _SessionsPageState extends State<SessionsPage> {
   }
 
   Future<void> updateSession(String id) async {
+    final token = await getJwtToken();
     final String subject = subjectController.text.trim();
     final String teacher = teacherController.text.trim();
     final String room = roomController.text.trim();
@@ -80,7 +82,8 @@ class _SessionsPageState extends State<SessionsPage> {
 
       final response = await http.put(
         Uri.parse('$apiUrl/$id'),
-        headers: {'Content-Type': 'application/json'},
+        headers: {        'Authorization': 'Bearer $token',
+'Content-Type': 'application/json'},
         body: json.encode(updatedSession),
       );
 
@@ -95,9 +98,19 @@ class _SessionsPageState extends State<SessionsPage> {
     }
   }
 
+    Future<String?> getJwtToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString('jwt_token');
+  }
+
   Future<void> deleteSession(String id) async {
     try {
-      final response = await http.delete(Uri.parse('$apiUrl/$id'));
+      final token = await getJwtToken();
+      final response = await http.delete(Uri.parse('$apiUrl/$id'),      
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
       if (response.statusCode == 200) {
         fetchSessions();
       } else {
@@ -113,7 +126,7 @@ class _SessionsPageState extends State<SessionsPage> {
 
     // Fill the text fields with the session data if editing
     if (isEditing) {
-      subjectController.text = sessionData!.subjectId;
+      subjectController.text = sessionData.subjectId;
       teacherController.text = sessionData.teacherId;
       roomController.text = sessionData.roomId;
       classController.text = sessionData.classId;
@@ -178,14 +191,14 @@ class _SessionsPageState extends State<SessionsPage> {
             ElevatedButton(
               onPressed: () {
                 if (isEditing) {
-                  updateSession(sessionData!
+                  updateSession(sessionData
                       .sessionId); // Ensure this field exists in your Session model
                 } else {
                   // Logic to add a new session here
                   // Add a function to handle new session creation
                 }
               },
-              child: Text(isEditing ? 'Update' : 'Add'),
+              child: Text('Update'),
             ),
           ],
         );

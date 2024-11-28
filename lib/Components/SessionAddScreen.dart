@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:tp3/Components/HomeScreen.dart';
 import 'package:tp3/Services/API.service.dart';
 import 'package:tp3/Model/Session.model.dart';
 import 'package:uuid/uuid.dart';
 
 class SessionAddScreen extends StatefulWidget {
+  const SessionAddScreen({super.key});
+
   @override
   _SessionAddScreenState createState() => _SessionAddScreenState();
 }
 
 class _SessionAddScreenState extends State<SessionAddScreen> {
   final _formKey = GlobalKey<FormState>();
-  final Uuid uuid = Uuid();
+  final Uuid uuid = const Uuid();
 
   final API _api = API(); // API instance to call functions
 
@@ -93,16 +96,20 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
       try {
         await _api.addSession(newSession);
         Navigator.pop(context);
+        Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomeScreen()), // Replace with your destination page
+  );
       } catch (error) {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text("Error"),
-            content: Text("Failed to add session. Please try again."),
+            title: const Text("Error"),
+            content: const Text("Failed to add session. Please try again."),
             actions: [
               TextButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text("OK"),
+                child: const Text("OK"),
               ),
             ],
           ),
@@ -115,7 +122,7 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Add New Session"),
+        title: const Text("Add New Session"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -126,7 +133,7 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Subject Dropdown
-                Text("Subject", style: TextStyle(fontSize: 18)),
+                const Text("Subject", style: TextStyle(fontSize: 18)),
                 DropdownButtonFormField<String>(
                   items: _subjects
                       .map((subject) => DropdownMenuItem<String>(
@@ -140,14 +147,14 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
                     });
                   },
                   value: _selectedSubjectId,
-                  decoration: InputDecoration(hintText: "Select subject"),
+                  decoration: const InputDecoration(hintText: "Select subject"),
                   validator: (value) =>
                       value == null ? "Please select a subject." : null,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 // Day Dropdown
-                Text("Day", style: TextStyle(fontSize: 18)),
+                const Text("Day", style: TextStyle(fontSize: 18)),
                 DropdownButtonFormField<String>(
                   items: _days
                       .map((day) => DropdownMenuItem<String>(
@@ -161,14 +168,14 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
                     });
                   },
                   value: _selectedDay,
-                  decoration: InputDecoration(hintText: "Select day"),
+                  decoration: const InputDecoration(hintText: "Select day"),
                   validator: (value) =>
                       value == null ? "Please select a day." : null,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 // Instructor Dropdown
-                Text("Instructor", style: TextStyle(fontSize: 18)),
+                const Text("Instructor", style: TextStyle(fontSize: 18)),
                 DropdownButtonFormField<String>(
                   items: _teachers
                       .map((teacher) => DropdownMenuItem<String>(
@@ -182,14 +189,14 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
                     });
                   },
                   value: _selectedTeacherId,
-                  decoration: InputDecoration(hintText: "Select instructor"),
+                  decoration: const InputDecoration(hintText: "Select instructor"),
                   validator: (value) =>
                       value == null ? "Please select an instructor." : null,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 // Class Dropdown
-                Text("Class", style: TextStyle(fontSize: 18)),
+                const Text("Class", style: TextStyle(fontSize: 18)),
                 DropdownButtonFormField<String>(
                   items: _classes
                       .map((classItem) => DropdownMenuItem<String>(
@@ -203,14 +210,14 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
                     });
                   },
                   value: _selectedClassId,
-                  decoration: InputDecoration(hintText: "Select class"),
+                  decoration: const InputDecoration(hintText: "Select class"),
                   validator: (value) =>
                       value == null ? "Please select a class." : null,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 // Room Dropdown
-                Text("Room", style: TextStyle(fontSize: 18)),
+                const Text("Room", style: TextStyle(fontSize: 18)),
                 DropdownButtonFormField<String>(
                   items: _rooms
                       .map((room) => DropdownMenuItem<String>(
@@ -224,17 +231,17 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
                     });
                   },
                   value: _selectedRoomId,
-                  decoration: InputDecoration(hintText: "Select room"),
+                  decoration: const InputDecoration(hintText: "Select room"),
                   validator: (value) =>
                       value == null ? "Please select a room." : null,
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
                 // Start Time Input
-                Text("Start Time", style: TextStyle(fontSize: 18)),
+                const Text("Start Time", style: TextStyle(fontSize: 18)),
                 TextFormField(
                   controller: _startTimeController,
                   decoration:
-                      InputDecoration(hintText: "Enter start time (e.g., 9:00 AM)"),
+                      const InputDecoration(hintText: "Enter start time (e.g., 9:00 AM)"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter the session start time.";
@@ -242,14 +249,14 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 16),
+                const SizedBox(height: 16),
 
                 // End Time Input
-                Text("End Time", style: TextStyle(fontSize: 18)),
+                const Text("End Time", style: TextStyle(fontSize: 18)),
                 TextFormField(
                   controller: _endTimeController,
                   decoration:
-                      InputDecoration(hintText: "Enter end time (e.g., 11:00 AM)"),
+                      const InputDecoration(hintText: "Enter end time (e.g., 11:00 AM)"),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Please enter the session end time.";
@@ -257,12 +264,12 @@ class _SessionAddScreenState extends State<SessionAddScreen> {
                     return null;
                   },
                 ),
-                SizedBox(height: 24),
+                const SizedBox(height: 24),
 
                 // Add Session Button
                 ElevatedButton(
                   onPressed: _submitForm,
-                  child: Text("Add Session"),
+                  child: const Text("Add Session"),
                 ),
               ],
             ),

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tp3/Components/SessionsPage.dart';
+import 'package:tp3/Components/classes.dart';
+import 'package:tp3/Components/room.dart';
+import 'package:tp3/Components/students.dart';
+import 'package:tp3/Components/subjects.dart';
+import 'package:tp3/Components/teachers.dart';
 import 'package:tp3/Model/Subject.model.dart';
 import 'package:tp3/Services/API.service.dart';
 import 'package:tp3/Model/Session.model.dart';
@@ -10,6 +15,19 @@ import 'SessionAddScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   final API apiService = API();
+
+  List<Map<String, dynamic>> pages = [
+  {'label': 'Rooms', 'widget': RoomsPage()},
+  {'label': 'Students', 'widget': StudentsPage()},
+  {'label': 'Teachers', 'widget': TeachersPage()},
+  {'label': 'Subjects', 'widget': SubjectsPage()},
+  {'label': 'Classes', 'widget': ClassesPage()},
+  {'label': 'Sessions', 'widget': SessionsPage()},
+
+];
+
+
+  HomeScreen({super.key});
 
   Future<Map<String, Subject>> _fetchAllSubjects() async {
     List<Subject> subjectList = await apiService.getSubjects();
@@ -41,7 +59,7 @@ Widget build(BuildContext context) {
 
   return Scaffold(
     appBar: AppBar(
-      title: Text("Timetable Management"),
+      title: const Text("Timetable Management"),
     ),
     body: Column(
       children: [
@@ -50,27 +68,27 @@ Widget build(BuildContext context) {
             future: sessions,
             builder: (context, sessionSnapshot) {
               if (sessionSnapshot.connectionState == ConnectionState.waiting) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               } else if (sessionSnapshot.hasError) {
                 return Center(child: Text('Error: ${sessionSnapshot.error}'));
               } else if (!sessionSnapshot.hasData || sessionSnapshot.data!.isEmpty) {
-                return Center(child: Text('No sessions available.'));
+                return const Center(child: Text('No sessions available.'));
               } else {
                 return FutureBuilder<Map<String, Subject>>(
                   future: subjects,
                   builder: (context, subjectSnapshot) {
                     if (subjectSnapshot.connectionState == ConnectionState.waiting) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(child: CircularProgressIndicator());
                     } else if (subjectSnapshot.hasError) {
                       return Center(child: Text('Error: ${subjectSnapshot.error}'));
                     } else if (!subjectSnapshot.hasData || subjectSnapshot.data!.isEmpty) {
-                      return Center(child: Text('No subjects available.'));
+                      return const Center(child: Text('No subjects available.'));
                     } else {
                       return FutureBuilder<Map<String, Teacher>>(
                         future: teachers,
                         builder: (context, teacherSnapshot) {
                           if (teacherSnapshot.connectionState == ConnectionState.waiting) {
-                            return Center(child: CircularProgressIndicator());
+                            return const Center(child: CircularProgressIndicator());
                           } else if (teacherSnapshot.hasError) {
                             return Center(child: Text('Error: ${teacherSnapshot.error}'));
                           } else {
@@ -78,7 +96,7 @@ Widget build(BuildContext context) {
                               future: classes,
                               builder: (context, classSnapshot) {
                                 if (classSnapshot.connectionState == ConnectionState.waiting) {
-                                  return Center(child: CircularProgressIndicator());
+                                  return const Center(child: CircularProgressIndicator());
                                 } else if (classSnapshot.hasError) {
                                   return Center(child: Text('Error: ${classSnapshot.error}'));
                                 } else {
@@ -86,7 +104,7 @@ Widget build(BuildContext context) {
                                     future: rooms,
                                     builder: (context, roomSnapshot) {
                                       if (roomSnapshot.connectionState == ConnectionState.waiting) {
-                                        return Center(child: CircularProgressIndicator());
+                                        return const Center(child: CircularProgressIndicator());
                                       } else if (roomSnapshot.hasError) {
                                         return Center(child: Text('Error: ${roomSnapshot.error}'));
                                       } else {
@@ -144,9 +162,7 @@ Widget build(BuildContext context) {
                                           int timeIndex = _getTimeIndex(session.startTime);
                                           int timeGap = _getTimeIndex(session.endTime);
                                           String subjectName = subjectMap[session.subjectId]?.subjectName ?? "Unknown Subject";
-                                          String teacherName = (teacherMap[session.teacherId]!.firstName +
-                                              " " +
-                                              teacherMap[session.teacherId]!.lastName) ??
+                                          String teacherName = ("${teacherMap[session.teacherId]!.firstName} ${teacherMap[session.teacherId]!.lastName}") ??
                                               "Unknown Teacher";
                                           String className = classMap[session.classId]?.className ?? "Unknown Class";
                                           String roomName = roomMap[session.roomId]?.roomName ?? "Unknown Room";
@@ -204,34 +220,34 @@ Widget build(BuildContext context) {
                                                   children: [
                                                     TableCell(
                                                         child: Padding(
-                                                            padding: EdgeInsets.all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Text(row['time']!,
-                                                                style: TextStyle(fontWeight: FontWeight.bold)))),
+                                                                style: const TextStyle(fontWeight: FontWeight.bold)))),
                                                     TableCell(
                                                         child: Padding(
-                                                            padding: EdgeInsets.all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Text(row['Monday'] ?? "",
-                                                                style: TextStyle(fontSize: 12)))),
+                                                                style: const TextStyle(fontSize: 12)))),
                                                     TableCell(
                                                         child: Padding(
-                                                            padding: EdgeInsets.all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Text(row['Tuesday'] ?? "",
-                                                                style: TextStyle(fontSize: 12)))),
+                                                                style: const TextStyle(fontSize: 12)))),
                                                     TableCell(
                                                         child: Padding(
-                                                            padding: EdgeInsets.all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Text(row['Wednesday'] ?? "",
-                                                                style: TextStyle(fontSize: 12)))),
+                                                                style: const TextStyle(fontSize: 12)))),
                                                     TableCell(
                                                         child: Padding(
-                                                            padding: EdgeInsets.all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Text(row['Thursday'] ?? "",
-                                                                style: TextStyle(fontSize: 12)))),
+                                                                style: const TextStyle(fontSize: 12)))),
                                                     TableCell(
                                                         child: Padding(
-                                                            padding: EdgeInsets.all(8.0),
+                                                            padding: const EdgeInsets.all(8.0),
                                                             child: Text(row['Friday'] ?? "",
-                                                                style: TextStyle(fontSize: 12)))),
+                                                                style: const TextStyle(fontSize: 12)))),
                                                   ],
                                                 ),
                                             ],
@@ -253,30 +269,34 @@ Widget build(BuildContext context) {
             },
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SessionsPage()), // Navigate to Session Manager Screen
-              );
-            },
-            child: Text('Session Manager'),
-          ),
-        ),
+Row(
+  mainAxisAlignment: MainAxisAlignment.spaceEvenly, // Distribute buttons evenly
+  children: pages.map((page) {
+    return ElevatedButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => page['widget']),
+        );
+      },
+      child: Text(page['label']),
+    );
+  }).toList(),
+)
+
       ],
     ),
     floatingActionButton: FloatingActionButton(
       onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => SessionAddScreen()),
+          MaterialPageRoute(builder: (context) => const SessionAddScreen()),
         );
       },
-      child: Icon(Icons.add),
       tooltip: 'Add New Session',
+      child: const Icon(Icons.add),
     ),
+    
   );
 }
 
@@ -296,4 +316,5 @@ Widget build(BuildContext context) {
         return -1;
     }
   }
+  
 }
